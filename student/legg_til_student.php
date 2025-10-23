@@ -26,12 +26,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<h2>Registrer ny student</h2>
+<h2>Legg til student</h2>
 <form method="POST">
     <label>Brukernavn: <input type="text" name="brukernavn" required></label><br>
     <label>Fornavn: <input type="text" name="fornavn" required></label><br>
     <label>Etternavn: <input type="text" name="etternavn" required></label><br>
-    <label>Klassekode: <input type="text" name="klassekode" required></label><br>
-    <input type="submit" value="Registrer student">
+    <label>Klassekode:
+        <select name="klassekode" required>
+            <option value="">-- Velg klasse --</option>
+            <?php
+            $resultat = mysqli_query($db, "SELECT klassekode FROM klasse");
+            while ($rad = mysqli_fetch_assoc($resultat)) {
+                echo "<option value='" . htmlspecialchars($rad['klassekode']) . "'>" .
+                     htmlspecialchars($rad['klassekode']) .
+                     "</option>";
+            }
+            ?>
+        </select>
+    </label><br>
+    <input type="submit" value="Legg til student">
 </form>
 <a href="../index.php">Tilbake</a>
