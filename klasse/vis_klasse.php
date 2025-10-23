@@ -1,32 +1,19 @@
 <?php
 require_once("../db.php");
 
-$stmt = $conn->query("SELECT * FROM klasse");
-$klasser = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
+$resultat = mysqli_query($db, "SELECT * FROM klasse");
 
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Vis klasser</title>
-</head>
-<body>
-  <h1>Klasser</h1>
-  <table border="1">
-    <tr>
-      <th>Klassekode</th>
-      <th>Klassenavn</th>
-      <th>Studiumkode</th>
-    </tr>
-    <?php foreach ($klasser as $rad): ?>
-      <tr>
-        <td><?= htmlspecialchars($rad["klassekode"]) ?></td>
-        <td><?= htmlspecialchars($rad["klassenavn"]) ?></td>
-        <td><?= htmlspecialchars($rad["studiumkode"]) ?></td>
-      </tr>
-    <?php endforeach; ?>
-  </table>
-  <p><a href="../index.php">Tilbake</a></p>
-</body>
-</html>
+echo "<table border='1'>";
+echo "<tr><th>Klassekode</th><th>Klassenavn</th><th>Studiumkode</th></tr>";
+
+while ($rad = mysqli_fetch_assoc($resultat)) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($rad['klassekode']) . "</td>";
+    echo "<td>" . htmlspecialchars($rad['klassenavn']) . "</td>";
+    echo "<td>" . htmlspecialchars($rad['studiumkode']) . "</td>";
+    echo "</tr>";
+}
+
+echo "</table>";
+echo "<a href='../index.php'>Tilbake</a>";
+?>
