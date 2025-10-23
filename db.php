@@ -1,15 +1,16 @@
 <?php
-$host = "b-studentsql-1.usn.no";  
-$dbname = "asaln7138";            
-$user = "asaln7138";              
-$pass = "1251asaln7138";           
+/* DB-tilkobling med miljøvariabler og feilhåndtering */
+$host = getenv('DB_HOST');
+$username = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$database = getenv('DB_DATABASE');
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // echo "Tilkoblet databasen!"; // valgfritt for testing
-} catch (PDOException $e) {
-    echo "Databasekobling feilet: " . $e->getMessage();
+$db = mysqli_connect($host, $username, $password, $database);
+
+if (!$db) {
+    die("Tilkobling til database feilet: " . mysqli_connect_error());
+} else {
+    echo "Tilkoblet databasen!";
 }
 ?>
 
