@@ -1,29 +1,26 @@
 <?php
 require_once("../db.php");
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $kode = $_POST["klassekode"];
-    $stmt = $conn->prepare("DELETE FROM klasse WHERE klassekode = ?");
-    $stmt->execute([$kode]);
-    echo "<p>Klasse slettet!</p>";
-}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $klassekode = $_POST['klassekode'];
 
-$klasser = $conn->query("SELECT klassekode FROM klasse")->fetchAll(PDO::FETCH_ASSOC);
+    // Først må vi slette studenter som tilhører klassen (pga. FOREIGN KEY)
+    $stmt1 = mysqli_prepare($db, "DELETE FROM student WHERE klassekode = ?");
+    mysqli_stmt_bind_param($stmt1, "s", $klassekode);
+    mysqli_stmt_execute($stmt1);
+
+    // Deretter sletter vi selve klassen
+    $stmt2 = mysqli_prepare($db, "DELETE FROM klasse WHERE klassekode = ?");
+    mysqli_stmt_bind_param($stmt2, "s", $klassekode);
+    mysqli_stmt_execute($stmt2);
+
+    echo "Klasse med kode <strong>$klassekode</strong> og tilhørende studenter er slettet.";
+}
 ?>
 
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Slett klasse</title></head>
-<body>
-  <h1>Slett klasse</h1>
-  <form method="post">
-    <select name="klassekode">
-      <?php foreach ($klasser as $k): ?>
-        <option value="<?= htmlspecialchars($k['klassekode']) ?>"><?= htmlspecialchars($k['klassekode']) ?></option>
-      <?php endforeach; ?>
-    </select>
-    <button type="submit">Slett</button>
-  </form>
-  <p><a href="../index.php">Tilbake</a></p>
-</body>
-</html>
+<h2>Slett klasse</h2>
+<form method="POST">
+    <label>Klassekode: <input type="text" name="klassekode" required></label><br>
+    <input type="submit" value="Slett klasse">
+</form>
+<a href="../index.php">Tilbake</a>
