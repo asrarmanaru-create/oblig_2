@@ -1,8 +1,8 @@
 <?php
-$host = "localhost";  // Endre til riktig host
-$dbname = "oblig_2";
-$user = "root";       // Din databasebruker
-$pass = "";           // Ditt passord
+$host = "b-studentsql-1.usn.no";   // USN database-server
+$dbname = "asaln7138";             // Ditt databasenavn (samme som brukernavn)
+$user = "asaln7138";               // Din databasebruker
+$pass = "1251asaln7138";            // Passordet du bruker til phpMyAdmin
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
