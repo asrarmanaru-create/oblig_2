@@ -1,22 +1,29 @@
 <?php
-include "../db.php";
+require_once("../db.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $kode = $_POST["klassekode"];
     $stmt = $conn->prepare("DELETE FROM klasse WHERE klassekode = ?");
     $stmt->execute([$kode]);
-    echo "Klasse slettet!";
+    echo "<p>Klasse slettet!</p>";
 }
 
-$stmt = $conn->query("SELECT klassekode, klassenavn FROM klasse");
-$klasser = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$klasser = $conn->query("SELECT klassekode FROM klasse")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<form method="post">
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Slett klasse</title></head>
+<body>
+  <h1>Slett klasse</h1>
+  <form method="post">
     <select name="klassekode">
-        <?php foreach ($klasser as $klasse) {
-            echo "<option value='{$klasse['klassekode']}'>{$klasse['klassenavn']}</option>";
-        } ?>
+      <?php foreach ($klasser as $k): ?>
+        <option value="<?= htmlspecialchars($k['klassekode']) ?>"><?= htmlspecialchars($k['klassekode']) ?></option>
+      <?php endforeach; ?>
     </select>
-    <input type="submit" value="Slett klasse">
-</form>
+    <button type="submit">Slett</button>
+  </form>
+  <p><a href="../index.php">Tilbake</a></p>
+</body>
+</html>
