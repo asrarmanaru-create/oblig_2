@@ -14,7 +14,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <h2>Slett student</h2>
 <form method="POST" onsubmit="return bekreftSletting();">
-    <label>Brukernavn: <input type="text" name="brukernavn" required></label><br>
+    <label>Velg student:
+        <select name="brukernavn" required>
+            <option value="">-- Velg student --</option>
+            <?php
+            $resultat = mysqli_query($db, "SELECT brukernavn, fornavn, etternavn FROM student");
+            while ($rad = mysqli_fetch_assoc($resultat)) {
+                echo "<option value='" . htmlspecialchars($rad['brukernavn']) . "'>" .
+                     htmlspecialchars($rad['brukernavn']) . " – " .
+                     htmlspecialchars($rad['fornavn']) . " " .
+                     htmlspecialchars($rad['etternavn']) .
+                     "</option>";
+            }
+            ?>
+        </select>
+    </label><br>
     <input type="submit" value="Slett student">
 </form>
 
