@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <script>
 function bekreftSletting() {
-    return confirm("Er du sikker på at du vil slette denne klassen og alle tilhørende studenter?");
+    return confirm("Er du sikker på at du vil slette denne klassen?");
 }
 </script>
 
