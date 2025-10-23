@@ -4,12 +4,12 @@ require_once("../db.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $klassekode = $_POST['klassekode'];
 
-    // Slett studenter først (pga. FOREIGN KEY)
+    
     $stmt1 = mysqli_prepare($db, "DELETE FROM student WHERE klassekode = ?");
     mysqli_stmt_bind_param($stmt1, "s", $klassekode);
     mysqli_stmt_execute($stmt1);
 
-    // Slett klassen
+    
     $stmt2 = mysqli_prepare($db, "DELETE FROM klasse WHERE klassekode = ?");
     mysqli_stmt_bind_param($stmt2, "s", $klassekode);
     mysqli_stmt_execute($stmt2);
